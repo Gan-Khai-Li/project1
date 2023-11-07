@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="getInfo()">Login</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+        function getInfo() {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            console.log(`Username: ${username}`);
+            console.log(`Password: ${password}`);
+
+            usernameInput.value = '';
+            passwordInput.value = '';
+
+            const loggedIn = login(username, password); 
+            if (loggedIn) {
+                createAdmin(username, password); 
+                fillMemberDetails("Siti", "10-10-2010", "Petaling Jaya");
+                const memberDetails = {
+                    name: "Siti",
+                    birthdate: "10-10-2010",
+                    address: "Petaling Jaya"
+                };
+                exportPDF(memberDetails);
+            } else {
+                console.log("Login failed. Re-enter: ");
+            }
+        }
+
+        function login(inputUsername, inputPassword) {
+            const username = "User1"; 
+            const password = "abc123"; 
+
+            return inputUsername === username && inputPassword === password;
+        }
+
+        function createAdmin(username, password) {
+            console.log("Admin account created: ");
+            console.log("Username: ", username);
+            console.log("Password: ", password);
+            alert("Admin account created. Check the details.");
+        }
+
+        function fillMemberDetails(name, birthdate, address) {
+            let memberDetails = {
+                name: name,
+                birthdate: birthdate,
+                address: address
+            };
+
+            console.log("Member details filled: ", memberDetails);
+        }
+
+        function exportPDF(memberDetails) {
+            const { name, birthdate, address } = memberDetails;
+            const pdf = new jsPDF();
+            pdf.text(`Name: ${name}\nBirthdate: ${birthdate}\nAddress: ${address}`, 10, 10);
+            pdf.save("member_details.pdf");
+        }
+    </script>
+
+</body>
+
+</html>
